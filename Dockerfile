@@ -12,8 +12,10 @@ RUN apk add openssh
 # === chmod a+rwx,g-rwx,o-rwx
 RUN mkdir -m 700 $HOME/.ssh
 
+COPY known_hosts ./
+
 RUN touch -m $HOME/.ssh/known_hosts
-RUN ssh-keyscan github.com >> $HOME/.ssh/known_hosts
+RUN cat ./known_hosts >> $HOME/.ssh/known_hosts
 
 RUN --mount=type=ssh \
     ssh -vT git@github.com || true
